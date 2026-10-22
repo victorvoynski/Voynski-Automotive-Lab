@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Book now · Voynski Automotive Lab</title>
+<meta name="description" content="Book a private car session, rolling shots, event coverage or a commercial shoot. Pick a date and I'll confirm within 24 hours.">
+<meta name="theme-color" content="#070707">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 30'%3E%3Cg transform='skewX(-20)'%3E%3Crect x='14' width='8' height='30' fill='%23ff1f1f'/%3E%3Crect x='26' width='8' height='30' fill='%23f4f4f2'/%3E%3Crect x='38' width='8' height='30' fill='%23f4f4f2' opacity='.45'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,700;1,800;1,900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="book">
+<main>
+
+<section class="page-hero" style="padding-bottom:40px">
+  <div class="ghost" aria-hidden="true">Grid slot</div>
+  <div class="wrap" style="position:relative">
+    <p class="tag rv">Book now</p>
+    <h1 class="rv rv-d1">Pick a date.<br><span class="outline red">I'll take it from there.</span></h1>
+  </div>
+</section>
+
+<section style="padding-top:20px">
+  <div class="wrap form-grid">
+    <aside>
+      <p class="lead rv">Choose the kind of session and a day that suits you. I'll confirm within 24 hours. Nothing is charged online.</p>
+      <ul class="checks rv rv-d1">
+        <li>Location planning included</li>
+        <li>Professional editing on every photo</li>
+        <li>A carefully crafted online gallery</li>
+      </ul>
+      <div class="shot wipe" style="aspect-ratio:4/5"><img src="images/f1-close.jpg" alt="Red Bull F1 car close up by the water" loading="lazy"></div>
+    </aside>
+
+    <div class="panel rv rv-d1" id="bookBox">
+      <form name="booking" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="bookForm">
+        <input type="hidden" name="form-name" value="booking">
+        <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
+        <input type="hidden" name="date" id="fDate">
+
+        <div class="fstep">
+          <div class="fstep-h"><span>1</span><h3>What kind of session?</h3></div>
+          <div class="opts">
+            <label class="opt"><input type="radio" name="service" value="Private car session" data-k="private" checked><span><b>Private session</b><small>Design, details, character</small></span></label>
+            <label class="opt"><input type="radio" name="service" value="Rolling shots" data-k="rolling"><span><b>Rolling shots</b><small>Motion, speed, presence</small></span></label>
+            <label class="opt"><input type="radio" name="service" value="Automotive event" data-k="events"><span><b>Event</b><small>Meets, rallies, track days</small></span></label>
+            <label class="opt"><input type="radio" name="service" value="Commercial photography" data-k="commercial"><span><b>Commercial</b><small>Dealers, detailers, brands</small></span></label>
+          </div>
+        </div>
+
+        <div class="fstep">
+          <div class="fstep-h"><span>2</span><h3>Your car</h3></div>
+          <div class="fields">
+            <div class="field"><label for="b-car">Make and model</label><input id="b-car" name="car" placeholder="e.g. Porsche 911 Carrera S"></div>
+            <div class="field"><label for="b-year">Year and colour</label><input id="b-year" name="car_details" placeholder="e.g. 2021, black"></div>
+          </div>
+        </div>
+
+        <div class="fstep">
+          <div class="fstep-h"><span>3</span><h3 id="dateTitle">Preferred day</h3></div>
+          <div class="cal">
+            <div class="cal-head"><button type="button" id="calPrev" aria-label="Previous month">‹</button><span id="calMonth"></span><button type="button" id="calNext" aria-label="Next month">›</button></div>
+            <div class="cal-grid" id="calGrid"></div>
+          </div>
+          <div class="opts three">
+            <label class="opt"><input type="radio" name="time" value="Sunrise"><span><b>Sunrise</b></span></label>
+            <label class="opt"><input type="radio" name="time" value="Daytime"><span><b>Daytime</b></span></label>
+            <label class="opt"><input type="radio" name="time" value="Golden hour / night" checked><span><b>Golden hour</b></span></label>
+          </div>
+        </div>
+
+        <div class="fstep">
+          <div class="fstep-h"><span>4</span><h3>Your details</h3></div>
+          <div class="fields">
+            <div class="field"><label for="b-first">First name</label><input id="b-first" name="first_name" required autocomplete="given-name"></div>
+            <div class="field"><label for="b-last">Last name</label><input id="b-last" name="last_name" required autocomplete="family-name"></div>
+            <div class="field"><label for="b-phone">Phone</label><input id="b-phone" name="phone" type="tel" autocomplete="tel"></div>
+            <div class="field"><label for="b-email">Email</label><input id="b-email" name="email" type="email" required autocomplete="email"></div>
+            <div class="field full"><label for="b-msg">Anything I should know?</label><textarea id="b-msg" name="message" placeholder="Location ideas, the look you want, how you'll use the photos..."></textarea></div>
+          </div>
+        </div>
+
+        <div class="summary" id="summary"></div>
+        <button class="btn" type="submit">Request booking <span class="arr">→</span></button>
+        <p class="form-err" hidden>Something went wrong. Please email me directly.</p>
+        <p class="form-err" id="dateErr" hidden>Please pick a day in the calendar.</p>
+      </form>
+      <div class="success"><div class="tick">✓</div><h3>Booking request sent</h3><p style="color:var(--muted)">Thank you. I'll get back to you within 24 hours to confirm the details.</p><a href="index.html" class="btn btn-line" style="margin-top:20px">Back to home</a></div>
+    </div>
+  </div>
+</section>
+
+</main>
+<script src="assets/main.js"></script>
+<script src="assets/forms.js"></script>
+<script src="assets/book.js"></script>
+</body>
+</html>

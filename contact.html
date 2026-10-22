@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Contact · Voynski Automotive Lab</title>
+<meta name="description" content="Write to Voynski Automotive Lab about a private car session, rolling shots, event coverage or a commercial project.">
+<meta name="theme-color" content="#070707">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 30'%3E%3Cg transform='skewX(-20)'%3E%3Crect x='14' width='8' height='30' fill='%23ff1f1f'/%3E%3Crect x='26' width='8' height='30' fill='%23f4f4f2'/%3E%3Crect x='38' width='8' height='30' fill='%23f4f4f2' opacity='.45'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@1,700;1,800;1,900&family=Barlow:wght@400;500;600&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body data-page="contact">
+<main>
+
+<section class="page-hero" style="padding-bottom:50px">
+  <div class="ghost" aria-hidden="true">Contact</div>
+  <div class="wrap" style="position:relative">
+    <p class="tag rv">Contact</p>
+    <h1 class="rv rv-d1">Unleash <span class="outline red">iconic images.</span></h1>
+    <p class="lead rv rv-d2">Complete the form and let's capture shots that dominate the spotlight. I usually reply the same day.</p>
+  </div>
+</section>
+
+<section style="padding-top:20px">
+  <div class="wrap form-grid">
+    <div>
+      <div class="shot wipe" style="aspect-ratio:3/2"><img src="images/skoda-front.jpg" alt="Škoda Octavia RS headlights on in a garage" loading="lazy"></div>
+      <div class="c-list">
+        <div class="c-item rv"><div><small>Email</small><b><a data-c="email" style="text-decoration:none"></a></b></div><button class="copy" id="copyEmail">Copy</button></div>
+        <a class="c-item rv rv-d1" data-c="instagram-link" target="_blank" rel="noopener"><div><small>Instagram</small><b data-c="instagram"></b></div><span>↗</span></a>
+        <div class="c-item rv rv-d2"><div><small>Where I shoot</small><b>Sofia &amp; all of Bulgaria</b></div></div>
+      </div>
+    </div>
+
+    <div class="panel rv rv-d1" id="contactBox">
+      <form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" id="contactForm">
+        <input type="hidden" name="form-name" value="contact">
+        <p hidden><label>Don't fill this out: <input name="bot-field"></label></p>
+        <div class="fstep-h"><span>✉</span><h3>Send a message</h3></div>
+        <div class="fields" style="margin-top:24px">
+          <div class="field"><label for="c-first">First name</label><input id="c-first" name="first_name" required autocomplete="given-name"></div>
+          <div class="field"><label for="c-last">Last name</label><input id="c-last" name="last_name" required autocomplete="family-name"></div>
+          <div class="field"><label for="c-phone">Phone</label><input id="c-phone" name="phone" type="tel" autocomplete="tel"></div>
+          <div class="field"><label for="c-email">Email</label><input id="c-email" name="email" type="email" required autocomplete="email"></div>
+          <div class="field full"><label for="c-msg">Message</label><textarea id="c-msg" name="message" required placeholder="Your car, what you have in mind, and when."></textarea></div>
+        </div>
+        <button class="btn" type="submit" style="margin-top:26px">Send message <span class="arr">→</span></button>
+        <p class="form-err" hidden>Something went wrong. Please email me directly.</p>
+      </form>
+      <div class="success"><div class="tick">✓</div><h3>Message received</h3><p style="color:var(--muted)">Thank you. I'll get back to you within a day.</p></div>
+    </div>
+  </div>
+</section>
+
+</main>
+<script src="assets/main.js"></script>
+<script src="assets/forms.js"></script>
+<script>
+  document.getElementById("copyEmail").addEventListener("click", e => {
+    navigator.clipboard?.writeText(CONTACT.email).then(() => {
+      e.target.textContent = "Copied ✓";
+      setTimeout(() => { e.target.textContent = "Copy"; }, 1800);
+    });
+  });
+  netlifySubmit(document.getElementById("contactForm"), document.getElementById("contactBox"));
+</script>
+</body>
+</html>
