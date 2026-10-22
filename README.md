@@ -24,3 +24,9 @@ The contact and booking forms use Netlify Forms. They start working once the sit
 ## Photos
 
 Only Victor's own photos go in `images/`, resized for the web (2000px long side, about 200 to 450 KB). Short muted clips for the reels live in `video/` (540px wide, under 1 MB each).
+
+## Bulgarian version
+
+The EN / BG switch is in the header (and in the phone menu). English text lives in the HTML.
+Bulgarian text lives in `assets/i18n.js`, matched by each element's `data-i18n` key.
+To change a Bulgarian line, edit it in that file. Car names and the T01-style labels stay in English.

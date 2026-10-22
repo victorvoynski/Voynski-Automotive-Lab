@@ -7,8 +7,6 @@ const LABS = { brand: "https://voynski-brand-lab.netlify.app/" };
 
 const page = document.body.dataset.page;
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-const t = (k, fallback) => fallback || k;
-const lang = "en";
 
 /* ---------- Header, menu, footer ---------- */
 const NAV = [
@@ -17,7 +15,7 @@ const NAV = [
   ["about.html", "about", "About"],
   ["contact.html", "contact", "Contact"],
 ];
-const navLinks = NAV.map(([href, key, label], i) => `<a href="${href}"${page === key ? ' class="active"' : ""}><span>0${i + 1}</span>${label}</a>`).join("");
+const navLinks = NAV.map(([href, key, label], i) => `<a href="${href}"${page === key ? ' class="active"' : ""}><span>0${i + 1}</span><em data-i18n="nav.${key}">${label}</em></a>`).join("");
 const logo = `<a href="index.html" class="logo" aria-label="Voynski Automotive Lab home"><span class="logo-mark" aria-hidden="true"><i></i><i></i><i></i></span><span><b>VOYNSKI</b><small>AUTOMOTIVE LAB</small></span></a>`;
 
 document.body.insertAdjacentHTML("afterbegin", `
@@ -26,24 +24,25 @@ document.body.insertAdjacentHTML("afterbegin", `
     ${logo}
     <div class="nav">
       <nav class="nav-links">${navLinks}</nav>
-      <a href="book.html" class="btn btn-small">Book now</a>
+      <div class="lang" role="group" aria-label="Language"><button data-lang="en">EN</button><button data-lang="bg">BG</button></div>
+      <a href="book.html" class="btn btn-small" data-i18n="cta.book">Book now</a>
       <button class="burger" aria-label="Menu"><span></span><span></span></button>
     </div>
   </div>
 </header>
-<div class="mobile-menu">${navLinks}<a href="book.html" class="btn">Book now <span class="arr">→</span></a></div>`);
+<div class="mobile-menu">${navLinks}<a href="book.html" class="btn" data-i18n="cta.bookArr">Book now <span class="arr">→</span></a><div class="lang" role="group" aria-label="Language"><button data-lang="en">EN</button><button data-lang="bg">BG</button></div></div>`);
 
 document.body.insertAdjacentHTML("beforeend", `
 <footer class="site-footer">
   <div class="wrap">
     <div class="foot-grid">
-      <div>${logo}<p style="color:var(--muted);max-width:340px;margin-top:22px">Professional automotive photography for enthusiasts, collectors and brands.</p></div>
-      <div><h4>PAGES</h4>${NAV.map(([h, , l]) => `<a href="${h}">${l}</a>`).join("")}<a href="book.html">Book now</a></div>
-      <div><h4>CONTACT</h4><a href="mailto:${CONTACT.email}">${CONTACT.email}</a><a href="https://instagram.com/${CONTACT.instagram}" target="_blank" rel="noopener">Instagram ↗</a></div>
-      <div><h4>VOYNSKI LABS</h4><a href="index.html">Automotive Lab</a><a href="${LABS.brand}" target="_blank" rel="noopener">Brand Lab ↗</a><a aria-disabled="true" style="opacity:.4;pointer-events:none">Wood Lab · soon</a></div>
+      <div>${logo}<p style="color:var(--muted);max-width:340px;margin-top:22px" data-i18n="foot.about">Professional automotive photography for enthusiasts, collectors and brands.</p></div>
+      <div><h4 data-i18n="foot.pages">PAGES</h4>${NAV.map(([h, k, l]) => `<a href="${h}" data-i18n="nav.${k}">${l}</a>`).join("")}<a href="book.html" data-i18n="cta.book">Book now</a></div>
+      <div><h4 data-i18n="foot.contact">CONTACT</h4><a href="mailto:${CONTACT.email}">${CONTACT.email}</a><a href="https://instagram.com/${CONTACT.instagram}" target="_blank" rel="noopener">Instagram ↗</a></div>
+      <div><h4>VOYNSKI LABS</h4><a href="index.html">Automotive Lab</a><a href="${LABS.brand}" target="_blank" rel="noopener">Brand Lab ↗</a><a aria-disabled="true" style="opacity:.4;pointer-events:none">Wood Lab · <span data-i18n="foot.soon">soon</span></a></div>
     </div>
     <div class="foot-big" aria-hidden="true">Automotive Lab</div>
-    <div class="foot-bottom"><span>© ${new Date().getFullYear()} Voynski Automotive Lab · Part of Voynski Labs</span><span>Sofia, Bulgaria</span></div>
+    <div class="foot-bottom"><span>© ${new Date().getFullYear()} Voynski Automotive Lab · <span data-i18n="foot.part">Part of Voynski Labs</span></span><span data-i18n="foot.city">Sofia, Bulgaria</span></div>
   </div>
 </footer>
 <div class="pass" aria-hidden="true"><i></i><i></i></div>
@@ -65,6 +64,34 @@ document.querySelectorAll("[data-c]").forEach(el => {
 const header = document.querySelector(".site-header");
 document.querySelector(".burger").addEventListener("click", () => document.body.classList.toggle("menu-open"));
 document.querySelectorAll(".mobile-menu a").forEach(a => a.addEventListener("click", () => document.body.classList.remove("menu-open")));
+
+/* ---------- Language: English lives in the HTML, Bulgarian in i18n.js ---------- */
+const EN = {};
+let lang = "en";
+function applyLang(l) {
+  lang = l;
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const k = el.dataset.i18n;
+    if (!(k in EN)) EN[k] = el.innerHTML;
+    const v = l === "bg" ? (window.BG || {})[k] : EN[k];
+    if (v != null) el.innerHTML = v;
+  });
+  document.querySelectorAll("[data-i18n-ph]").forEach(el => {
+    const k = el.dataset.i18nPh;
+    if (!("ph:" + k in EN)) EN["ph:" + k] = el.placeholder;
+    const v = l === "bg" ? (window.BG || {})[k] : EN["ph:" + k];
+    if (v != null) el.placeholder = v;
+  });
+  document.documentElement.lang = l;
+  document.querySelectorAll(".lang button").forEach(b => b.classList.toggle("on", b.dataset.lang === l));
+  try { localStorage.setItem("val-lang", l); } catch (e) {}
+  document.dispatchEvent(new CustomEvent("langchange", { detail: l }));
+}
+const t = (k, fallback) => (lang === "bg" && window.BG && window.BG[k]) || fallback || k;
+document.querySelectorAll(".lang button").forEach(b => b.addEventListener("click", () => applyLang(b.dataset.lang)));
+let savedLang = "en";
+try { savedLang = localStorage.getItem("val-lang") || "en"; } catch (e) {}
+applyLang(savedLang);
 
 /* ---------- HUD: your scroll speed as a dashboard ---------- */
 const hud = document.querySelector(".hud");

@@ -10,8 +10,8 @@
   --red-2: #ff5a3c;
   --green: #2bd96b;
   --purple: #b36bff;
-  --display: "Barlow Condensed", "Arial Narrow", sans-serif;
-  --body: "Barlow", system-ui, sans-serif;
+  --display: "Barlow Condensed", "Fira Sans Extra Condensed", "Arial Narrow", sans-serif;
+  --body: "Barlow", "Fira Sans", system-ui, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, monospace;
   --ease: cubic-bezier(.2, .7, .1, 1);
   --kerb: repeating-linear-gradient(90deg, var(--red) 0 38px, #f4f4f2 38px 76px);
@@ -78,6 +78,13 @@ h3 { font-size: clamp(26px, 2.6vw, 38px); }
 .mobile-menu a:not(.btn) { font: 900 italic clamp(44px, 13vw, 72px)/1 var(--display); text-transform: uppercase; text-decoration: none; }
 .mobile-menu a:not(.btn) span { font: 500 12px var(--mono); color: var(--red); vertical-align: 24px; margin-right: 10px; font-style: normal; }
 .mobile-menu .btn { align-self: flex-start; margin-top: 30px; }
+.nav-links a em, .mobile-menu a em { font-style: inherit; }
+.lang { display: flex; border: 1px solid var(--line); }
+.lang button { background: none; border: 0; color: var(--muted); font: 500 11px var(--mono); letter-spacing: .1em; padding: 7px 10px; cursor: pointer; transition: color .2s, background .2s; }
+.lang button:hover { color: var(--text); }
+.lang button.on { background: var(--red); color: #fff; }
+.mobile-menu .lang { align-self: flex-start; margin-top: 22px; }
+.mobile-menu .lang button { font-size: 13px; padding: 10px 16px; }
 
 /* Start lights intro */
 .lights { position: fixed; inset: 0; z-index: 200; background: #000; display: grid; place-items: center; transition: clip-path .7s var(--ease); clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
@@ -363,6 +370,7 @@ a.c-item:hover { transform: translateX(8px); }
   section { padding: 90px 0; }
   .wrap { padding: 0 18px; }
   .site-header .wrap { height: 68px; }
+  .site-header .lang { display: none; }
   .hero .wrap { padding-bottom: 90px; padding-top: 110px; }
   .hero-sub { gap: 24px; }
   .telemetry { position: relative; }

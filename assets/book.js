@@ -16,7 +16,7 @@
   let picked = null;
   const grid = document.getElementById("calGrid"), monthEl = document.getElementById("calMonth");
   const prev = document.getElementById("calPrev"), next = document.getElementById("calNext");
-  const locale = "en-GB";
+  let locale = lang === "bg" ? "bg-BG" : "en-GB";
 
   function drawCal() {
     const y = view.getFullYear(), m = view.getMonth();
@@ -49,15 +49,18 @@
   function update() {
     const svc = services.find(x => x.checked);
     const isEvent = svc.dataset.k === "events";
-    document.getElementById("dateTitle").textContent = isEvent ? "Event day" : "Preferred day";
+    document.getElementById("dateTitle").textContent = isEvent ? t("b.ev", "Event day") : t("b.20", "Preferred day");
     document.getElementById("fDate").value = picked ? `${picked.getFullYear()}-${String(picked.getMonth() + 1).padStart(2, "0")}-${String(picked.getDate()).padStart(2, "0")}` : "";
     const car = form.car.value.trim();
-    const when = picked ? picked.toLocaleDateString(locale, { weekday: "long", day: "numeric", month: "long" }) : "no day picked yet";
-    summary.innerHTML = `<b>${svc.value}</b>${car ? " · " + car.replace(/[<>&]/g, "") : ""}<br>${when} · ${form.time.value}`;
+    const when = picked ? picked.toLocaleDateString(locale, { weekday: "long", day: "numeric", month: "long" }) : t("b.noday", "no day picked yet");
+    // Show the labels in the current language; the English values are what gets sent.
+    const label = name => form.querySelector(`input[name="${name}"]:checked`).closest("label").querySelector("b").textContent;
+    summary.innerHTML = `<b>${label("service")}</b>${car ? " · " + car.replace(/[<>&]/g, "") : ""}<br>${when} · ${label("time")}`;
   }
   form.addEventListener("change", update);
   form.car.addEventListener("input", update);
   drawCal(); update();
+  document.addEventListener("langchange", () => { locale = lang === "bg" ? "bg-BG" : "en-GB"; drawCal(); update(); });
 
   netlifySubmit(form, document.getElementById("bookBox"), () => {
     if (!picked) { document.getElementById("dateErr").hidden = false; grid.scrollIntoView({ behavior: "smooth", block: "center" }); return false; }
