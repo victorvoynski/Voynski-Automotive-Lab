@@ -3,8 +3,7 @@
 // Contact details and sister sites live here so every page shows the same thing.
 // TODO: check the Instagram handle with Victor.
 const CONTACT = { email: "hello@voynskiautomotivelab.com", instagram: "voynskiautomotivelab" };
-// TODO: put the live Brand Lab address here once it has one.
-const LABS = { brand: "#" };
+const LABS = { brand: "https://voynski-brand-lab.netlify.app/" };
 
 const page = document.body.dataset.page;
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
